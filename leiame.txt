@@ -1,0 +1,19 @@
+******************************************************** 
+AVA: cursos.alura.com.br
+Formação: Node.js com Express
+Curso: NodeJS: ORM com NodeJS: API com Sequelize e MySQL
+Data Início: 16/03/2021
+********************************************************
+
+Capítulo 01: Estruturando o projeto
+
+1. Criamos um novo diretório: orm-Sequelize;
+2. Inicializamos e instalamos algumas dependencias:
+        >npm init -y
+        >npm install express
+        >npm install body-parser
+        >npm install nodemon --save-dev
+3. Criamos o fonte inicial da aplicação:
+        @see api\index.js
+4. Copiamos o .gitignore do projeto anterior;
+5. Criamos o repositório inicial da aplicação, sincronizando com o github;
