@@ -6,5 +6,47 @@ Data Início: 24/03/2021
 *************************************************************************
 
 Capítulo 01: Soft delete (exclusão suave)
+#SequelizeParanoid, #SequelizeAddColumn, #softDelete, #restore
 
-1.
+1. Primeiramente, copiamos a pasta do projeto anterior (orm-sequelize) para orm-sequelize2;
+
+2. Criamos um novo BD no SGBD MySQL 8 chamado orm_sequelize2 restaurando as tabelas do orm_sequelize;
+
+3. Alteramos o arquivo:
+        @see api\config\config.json
+   ...para refletir as modificações
+
+4. Executamos o comando:
+        >npm outdated
+   ...e identificamos que o Sequelize (6.5.1) tem uma nova versão (6.6.2). Trocamos a versão no:
+        @see package.json
+   ...executando o comando:
+        >npm update
+   Isso substitui a versão do sequelize;
+
+5. Em todos os modelos definimos o "paranoid : true" que é o mecanismo de "soft delete" do Sequelize;
+
+6. Para que o "soft delete" funcione, adicionamos uma coluna "deletedAt" em cada uma das tabelas do 
+   banco de dados usando migrations. Primeiramente, criamos os esqueletos das migracoes com os comandos:
+        >npx sequelize-cli migration:generate --name addcolumn-pessoas
+        >npx sequelize-cli migration:generate --name addcolumn-niveis
+        >npx sequelize-cli migration:generate --name addcolumn-turmas
+        >npx sequelize-cli migration:generate --name addcolumn-matriculas
+   ...depois, modificamos cada um deles para executar o "addColumn" do Sequelize:     
+        @see api\migrations\20210324223025-addcolumn-pessoas.js
+        @see api\migrations\20210324223516-addcolumn-niveis.js
+        @see api\migrations\20210324223535-addcolumn-turmas.js
+        @see api\migrations\20210324223543-addcolumn-matriculas.js
+
+7. Inserimos o método de "restauração" do "soft delete" em todos os controldores:
+        @see api\controllers\NivelController.js
+        @see api\controllers\PessoaController.js
+        @see api\controllers\TurmaController.js
+   ...e criamos rotas para estes métodos:
+        @see api\routes\niveisRoute.js
+        @see api\routes\pessoasRoute.js
+        @see api\routes\turmasRoute.js
+
+Capítulo 02: Escopo de modelo e validações
+
+1. 

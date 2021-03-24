@@ -11,4 +11,7 @@ router
  .put('/turmas/:id', TurmaController.atualizaTurma)
  .delete('/turmas/:id', TurmaController.apagaTurma);
 
+/** NAO CRUDs */
+router.post('/turmas/:id/restaura', TurmaController.restauraTurma);
+
 module.exports = router

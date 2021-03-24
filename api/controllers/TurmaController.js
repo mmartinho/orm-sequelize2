@@ -93,6 +93,26 @@ class TurmaController {
             return res.status(500).json(error.message);
         }  
     }  
+
+    /**
+     * Restaura uma turma excluída
+     * @param {*} req 
+     * @param {*} res 
+     * @returns 
+     */
+    static async restauraTurma(req, res) {
+        const { id } = req.params;
+        try{
+            await database.Turmas.restore({ 
+                where : { 
+                    id : Number(id) 
+                }
+            });
+            return res.status(200).json(`Turma com id ${id} restaurada com sucesso`);
+        } catch (error) {
+            return res.status(500).json(error.message);
+        }
+    }     
 };
 
 module.exports = TurmaController;

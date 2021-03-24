@@ -11,4 +11,7 @@ router
  .put('/niveis/:id', NivelController.atualizaNivel)
  .delete('/niveis/:id', NivelController.apagaNivel);
 
+/** NAO CRUDs */
+router.post('/niveis/:id/restaura', NivelController.restauraNivel);
+
 module.exports = router;

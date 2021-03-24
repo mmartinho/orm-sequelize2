@@ -96,6 +96,26 @@ class PessoaController {
     }
 
     /**
+     * Restaura uma pessoa excluída
+     * @param {*} req 
+     * @param {*} res 
+     * @returns 
+     */
+    static async restauraPessoa(req, res) {
+        const { id } = req.params;
+        try{
+            await database.Pessoas.restore({ 
+                where : { 
+                    id : Number(id) 
+                }
+            });
+            return res.status(200).json(`Pessoa com id ${id} restaurada com sucesso`);
+        } catch (error) {
+            return res.status(500).json(error.message);
+        }         
+    }
+
+    /**
      * Visualiza a matricula da pessoa
      * @param {*} req 
      * @param {*} res 
@@ -176,7 +196,28 @@ class PessoaController {
         } catch (error) {
             return res.status(500).json(error.message);
         }        
-    }    
+    }  
+    
+    /**
+     * Restaura uma matricula excluída
+     * @param {*} req 
+     * @param {*} res 
+     * @returns 
+     */
+    static async restauraMatricula(req, res) {
+        const { estudanteId, matriculaId } = req.params;
+        try{
+            await database.Matriculas.restore({ 
+                where : { 
+                    id : Number(matriculaId),
+                    estudante_id : Number(estudanteId)  
+                }
+            });
+            return res.status(200).json(`Matrícula com id ${matriculaId} restaurada com sucesso`);
+        } catch (error) {
+            return res.status(500).json(error.message);
+        }
+    }     
 };
 
 module.exports = PessoaController;
