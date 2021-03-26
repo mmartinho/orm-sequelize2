@@ -3,13 +3,27 @@ const database = require('../models');
 class PessoaController {
 
     /**
+     * Lista de pessoas ativas
+     * @param {*} req 
+     * @param {*} res 
+     */
+    static async pegaPessoasAtivas(req, res) {
+        try {
+            const todasAsPessoas = await database.Pessoas.findAll();
+            return res.status(200).json(todasAsPessoas);
+        } catch (error) {
+            return res.status(500).json(error.message);
+        }
+    }
+
+    /**
      * Lista de pessoas
      * @param {*} req 
      * @param {*} res 
      */
     static async pegaTodasAsPessoas(req, res) {
         try {
-            const todasAsPessoas = await database.Pessoas.findAll();
+            const todasAsPessoas = await database.Pessoas.scope('todos').findAll();
             return res.status(200).json(todasAsPessoas);
         } catch (error) {
             return res.status(500).json(error.message);
@@ -45,7 +59,7 @@ class PessoaController {
         try {
             const novaPessoaCriada = await database.Pessoas.create(novaPessoa);
             return res.status(201).json(novaPessoaCriada);
-        } catch (erorr) {
+        } catch (error) {
             return res.status(500).json(error.message);
         }
     }
@@ -70,7 +84,7 @@ class PessoaController {
                 }
             });
             return res.status(200).json(pessoaAtualizada);
-        } catch (erorr) {
+        } catch (error) {
             return res.status(500).json(error.message);
         }        
     }
@@ -146,7 +160,7 @@ class PessoaController {
         try {
             const novaMatriculaCriada = await database.Matriculas.create(novaMatricula);
             return res.status(201).json(novaMatriculaCriada);
-        } catch (erorr) {
+        } catch (error) {
             return res.status(500).json(error.message);
         }
     } 
@@ -172,7 +186,7 @@ class PessoaController {
                 }
             });
             return res.status(200).json(matriculaAtualizada);
-        } catch (erorr) {
+        } catch (error) {
             return res.status(500).json(error.message);
         }        
     }  

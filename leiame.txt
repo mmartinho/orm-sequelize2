@@ -48,5 +48,19 @@ Capítulo 01: Soft delete (exclusão suave)
         @see api\routes\turmasRoute.js
 
 Capítulo 02: Escopo de modelo e validações
+#modelDefaultScope, #modelScope, #validationRule
+
+1. Adicionamos um escopo padrão no modelo Pessoas:
+     @see api\models\pessoas.js
+
+2. Adicionamos um escopo opcional no modelo Pessoas, modificando rotas e controladores para que possamos selecioná-lo:
+     @see api\controllers\PessoaController.js
+     @see api\routes\pessoasRoute.js
+
+3. Adicionamos validações "prontas" e "customizadas" em atributos do modelo Pessoa:
+     @see api\models\pessoas.js
+
+Capítulo 03: Escopo de associação e operadores
 
 1. 
+

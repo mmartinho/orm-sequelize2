@@ -15,14 +15,59 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Pessoas.init({
-    nome: DataTypes.STRING,
+    /**
+     * Atributos
+     */
+    nome: {
+      type: DataTypes.STRING,
+      /** 
+       * Validação customizada
+       */
+      validate : {
+        funcaoValidadora: function(dado) {
+          if(dado.length < 3) { 
+            throw new Error('O campo nome deve ter mais de 3 caracteres'); 
+          }
+        }
+      }
+    },
     ativo: DataTypes.BOOLEAN,
-    email: DataTypes.STRING,
+    email: {
+        type: DataTypes.STRING,
+        /** 
+         * Validação pronta de verificação 
+         * formato de email 
+         */
+        validate : {
+          isEmail : { 
+            args: true,
+            msg: "Dado do tipo e-mail inválido"
+          }
+        }
+    },
     role: DataTypes.STRING
   }, {
     sequelize,
+    /**
+     * Fixa o nome do modelo
+     */
     modelName: 'Pessoas',
-    paranoid : true
+    /**
+     * Habilita o "soft delete"
+     * Necessita coluna "deletedAt"
+     */
+    paranoid : true,
+    /**
+     * Escopo Padrão: Toda consulta na tabela 
+     * pessoas possui essa clausula
+     */
+    defaultScope: {
+      where : { ativo : true }
+    },
+    scopes: {
+      /** Escopos customizados */
+      todos : { where : { } }
+    }
   });
   return Pessoas;
 };
