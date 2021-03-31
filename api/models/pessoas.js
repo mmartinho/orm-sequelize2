@@ -10,8 +10,24 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Pessoas.hasMany(models.Turmas, { foreignKey : 'docente_id'});
-      Pessoas.hasMany(models.Matriculas, { foreignKey : 'estudante_id'});
+      Pessoas.hasMany(models.Turmas, { 
+        foreignKey : 'docente_id'
+      });
+      Pessoas.hasMany(models.Matriculas, { 
+        foreignKey : 'estudante_id', 
+        /**
+         * Escopo de associacao.
+         * Funciona como "where status = 'confirmado'"
+         */
+        scope : { status : 'confirmado' },
+        /**
+         * Nome do "mixim" personalizado "getAulasMatriculadas()"
+         * Mixins são métodos que podem ser utilizados por 
+         * outras classes, sem a necessidade de herança direta.
+         * Eles existem somente nas intâncias dos modelos
+         */
+        as : 'aulasMatriculadas'
+      });
     }
   };
   Pessoas.init({

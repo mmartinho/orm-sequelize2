@@ -1,4 +1,5 @@
 const database = require('../models');
+const Sequelize = require('sequelize');
 
 class PessoaController {
 
@@ -231,7 +232,73 @@ class PessoaController {
         } catch (error) {
             return res.status(500).json(error.message);
         }
-    }     
+    }   
+    
+    /**
+     * Mostra todas as matriculas da pessoa
+     * @param {*} req 
+     * @param {*} res 
+     * @returns 
+     */
+     static async pegaMatriculas(req, res) {
+        const { estudanteId } = req.params; 
+        try{
+            const pessoa = await database.Pessoas.findOne({ where: { id: Number(estudanteId) } });
+            /**
+             * Usando escopo de associação
+             * @see api\models\pessoas.js
+             */
+            const matriculas = await pessoa.getAulasMatriculadas();
+            const total = await pessoa.countAulasMatriculadas();
+            return res.status(200).json( { matriculas: matriculas, total : total });
+        } catch (error) {
+            return res.status(500).json(error.message);
+        }        
+    }   
+    
+    /**
+     * Mostra todas as matriculas em uma turma
+     * @param {*} req 
+     * @param {*} res 
+     * @returns 
+     */
+     static async pegaMatriculasPorTurma(req, res) {
+        const { turmaId } = req.params; 
+        try{
+            const todasAsMatriculas = await database.Matriculas.findAndCountAll({
+                where : {
+                    turma_id : Number(turmaId),
+                    status : 'confirmado'
+                }
+            });
+            return res.status(200).json(todasAsMatriculas);
+        } catch (error) {
+            return res.status(500).json(error.message);
+        }        
+    } 
+    
+    /**
+     * Mostra todas as matriculas em uma turma
+     * @param {*} req 
+     * @param {*} res 
+     * @returns 
+     */
+     static async pegaTurmasLotadas(req, res) {
+        const lotacaoTurma = 2; 
+        try {
+            const turmasLotadas = await database.Matriculas.findAndCountAll({
+                where : {
+                    status : 'confirmado'
+                },
+                attributes : ['turma_id'],
+                group: ['turma_id'],
+                having: Sequelize.literal(`count(turma_id) >= ${lotacaoTurma}`)
+            });
+            return res.status(200).json(turmasLotadas.count);
+        } catch (error) {
+            return res.status(500).json(error.message);
+        }        
+    }    
 };
 
 module.exports = PessoaController;

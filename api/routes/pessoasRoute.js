@@ -20,5 +20,8 @@ router.delete('/pessoas/:estudanteId/matricula/:matriculaId', PessoaController.a
 /** NAO CRUDs */
 router.post('/pessoas/:id/restaura', PessoaController.restauraPessoa);
 router.post('/pessoas/:estudanteId/matriculas/:matriculaId/restaura', PessoaController.restauraMatricula);
+router.get('/pessoas/:estudanteId/matriculas', PessoaController.pegaMatriculas);
+router.get('/pessoas/matricula/:turmaId/confirmadas', PessoaController.pegaMatriculasPorTurma);
+router.get('/pessoas/matricula/lotadas', PessoaController.pegaTurmasLotadas);
 
 module.exports = router;

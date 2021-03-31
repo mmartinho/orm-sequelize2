@@ -61,6 +61,25 @@ Capítulo 02: Escopo de modelo e validações
      @see api\models\pessoas.js
 
 Capítulo 03: Escopo de associação e operadores
+#associationScope, #modelMethodsMixim, #queryStrings, #sequelizeFinderFunctions, #sequelizeLiterals, #sequelizeGroup, 
+#sequelizeHaving
+
+1. Acrescetamos o método "pegaMatriculas" no controlador de Pessoas:
+     @see api\controllers\PessoaController.js
+2. Acrescetamos um escopo de associação no modelo de Pessoas:
+     @see api\models\pessoas.js
+3. Modificamos o método pegaTodasAsTurmas() do controlador de turmas para aceitar query strings
+     @see api\controllers\TurmaController.js
+4. Acrescetamos um novo método ao controlador de Pessoas pegaMatriculasPorTurma() usando uma nova opção de função 
+   "finder" do Sequelize:
+     @see api\controllers\PessoaController.js
+5. Acrescetamos um novo método ao controlador de Pessoas pegaTurmasLotadas() usando agrupamento de atributo pra 
+   fazer contagem agrupada com uma condição:
+     @see api\controllers\PessoaController.js
+
+Capítulo 04: Transações
 
 1. 
+
+
 
