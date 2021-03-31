@@ -78,8 +78,18 @@ Capítulo 03: Escopo de associação e operadores
      @see api\controllers\PessoaController.js
 
 Capítulo 04: Transações
+#sequelizeManagedTransaction, #sequelizeUnmanagedTransaction
+
+1. Acrescetamos o método "cancelaPessoa" que usa uma transação para garantir a execução até o final, e, caso ocorra 
+   um erro, que seja desfeita:
+     @see api\controllers\PessoaController.js
+2. Colocamos o método cancelaPessoa dentro de um callback (gerenciado) de transação:
+     @see api\controllers\PessoaController.js
+
+Capítulo 05: Refatoração com serviços
 
 1. 
+
 
 
 

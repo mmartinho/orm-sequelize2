@@ -298,6 +298,45 @@ class PessoaController {
         } catch (error) {
             return res.status(500).json(error.message);
         }        
+    }  
+    
+    /**
+     * Mostra todas as matriculas em uma turma
+     * @param {*} req 
+     * @param {*} res 
+     * @returns 
+     */
+     static async cancelaPessoa(req, res) {
+        const { estudanteId } = req.params;
+        try {
+            /**
+             * Transação GERENCIADA (usa callback) 
+             * de atualização em várias tabelas
+             */
+            database.sequelize.transaction(async transacao => {
+                /** Desativa estudante */
+                await database.Pessoas.update(
+                    { ativo: false }, 
+                    { where: { id: Number(estudanteId) } },
+                    { transaction: transacao }
+                );
+                /** Cancela todas as suas matrículas */
+                await database.Matriculas.update(
+                    { status: 'cancelado' }, 
+                    { where: { estudante_id: Number(estudanteId) } },
+                    { transaction : transacao }
+                );    
+            });
+            const matriculasCanceladas = await database.Matriculas.findAll(
+                { where: { estudante_id: Number(estudanteId) } }
+            );
+            return res.status(200).json({ 
+                message: `Estudante ${estudanteId} inativado`, 
+                matriculasCanceladas : matriculasCanceladas 
+            });
+        } catch (error) {
+            return res.status(500).json(error.message);
+        }        
     }    
 };
 
