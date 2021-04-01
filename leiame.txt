@@ -88,8 +88,17 @@ Capítulo 04: Transações
 
 Capítulo 05: Refatoração com serviços
 
-1. 
-
-
+1. Criamos uma classe para trabalhar com métodos comuns de manipulação de dados:
+     @see api\services\Services.js
+2. Criamos as classes de serviço para trabalhar com os métodos específicos de Niveis, Pessoas e Turmas, herdando
+   os métodos comuns da classe Services:
+     @see api\services\NiveisServices.js
+     @see api\services\PessoasServices.js
+     @see api\services\TurmasServices.js
+3. Criamos o ponto de entrada de exportação de toda a pasta "services":
+     @see api\services\index.js
+   ...para facilitar as importações nos controladores
+4. Alteramos alguns método do controlador de pessoas para usar o serviço:
+     @see api\controllers\PessoaController.js
 
 

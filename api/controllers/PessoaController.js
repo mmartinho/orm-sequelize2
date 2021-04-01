@@ -1,16 +1,19 @@
 const database = require('../models');
 const Sequelize = require('sequelize');
 
+const { PessoasServices } = require('../services');
+const pessoasServices = new PessoasServices();
+
 class PessoaController {
 
     /**
-     * Lista de pessoas ativas
+     * Lista de pessoas ativas usando pessoasServices
      * @param {*} req 
      * @param {*} res 
      */
     static async pegaPessoasAtivas(req, res) {
         try {
-            const todasAsPessoas = await database.Pessoas.findAll();
+            const todasAsPessoas = await pessoasServices.pegaRegistrosAtivos();
             return res.status(200).json(todasAsPessoas);
         } catch (error) {
             return res.status(500).json(error.message);
@@ -18,13 +21,13 @@ class PessoaController {
     }
 
     /**
-     * Lista de pessoas
+     * Lista de pessoas usando pessoasServices
      * @param {*} req 
      * @param {*} res 
      */
     static async pegaTodasAsPessoas(req, res) {
         try {
-            const todasAsPessoas = await database.Pessoas.scope('todos').findAll();
+            const todasAsPessoas = await pessoasServices.pegaTodosOsRegistros();
             return res.status(200).json(todasAsPessoas);
         } catch (error) {
             return res.status(500).json(error.message);
@@ -33,6 +36,8 @@ class PessoaController {
 
     /**
      * Visualiza uma pessoa
+     * @todo usar pessoasServices 
+     * 
      * @param {*} req 
      * @param {*} res 
      */
@@ -52,6 +57,8 @@ class PessoaController {
 
     /**
      * Acrescenta uma nova pessoa
+     * @todo usar o pessoasServices
+     * 
      * @param {*} req 
      * @param {*} res 
      */
@@ -67,6 +74,8 @@ class PessoaController {
 
     /**
      * Atualiza uma pessoa
+     * @todo user o pessoasService
+     * 
      * @param {*} req 
      * @param {*} res 
      */
@@ -92,6 +101,8 @@ class PessoaController {
 
     /**
      * Exclui uma pessoa
+     * @see usar o pessoasService
+     * 
      * @param {*} req 
      * @param {*} res 
      * @returns 
@@ -112,6 +123,8 @@ class PessoaController {
 
     /**
      * Restaura uma pessoa excluída
+     * @todo user o pessoasService
+     * 
      * @param {*} req 
      * @param {*} res 
      * @returns 
@@ -132,6 +145,8 @@ class PessoaController {
 
     /**
      * Visualiza a matricula da pessoa
+     * @todo usar o pessoasService
+     * 
      * @param {*} req 
      * @param {*} res 
      */
@@ -152,6 +167,8 @@ class PessoaController {
     
     /**
      * Cria uma nova matricula para pessoa
+     * @todo usar o pessoaService
+     * 
      * @param {*} req 
      * @param {*} res 
      */
@@ -168,6 +185,8 @@ class PessoaController {
     
     /**
      * Atualiza matricula de pessoa
+     * @todo usar o pessoaService
+     * 
      * @param {*} req 
      * @param {*} res 
      */
@@ -194,6 +213,8 @@ class PessoaController {
     
     /**
      * Exclui a matrícula da pessoa
+     * @todo usar o pessoasService
+     * 
      * @param {*} req 
      * @param {*} res 
      * @returns 
@@ -215,6 +236,8 @@ class PessoaController {
     
     /**
      * Restaura uma matricula excluída
+     * @todo usar o pessoasService
+     * 
      * @param {*} req 
      * @param {*} res 
      * @returns 
@@ -236,6 +259,8 @@ class PessoaController {
     
     /**
      * Mostra todas as matriculas da pessoa
+     * @todo usar o pessoasService
+     * 
      * @param {*} req 
      * @param {*} res 
      * @returns 
@@ -258,6 +283,8 @@ class PessoaController {
     
     /**
      * Mostra todas as matriculas em uma turma
+     * @todo usar o pessoasService
+     * 
      * @param {*} req 
      * @param {*} res 
      * @returns 
@@ -279,6 +306,8 @@ class PessoaController {
     
     /**
      * Mostra todas as matriculas em uma turma
+     * @todo usar o pessoasService
+     * 
      * @param {*} req 
      * @param {*} res 
      * @returns 
@@ -301,12 +330,14 @@ class PessoaController {
     }  
     
     /**
-     * Mostra todas as matriculas em uma turma
+     * Inativa um estudante e cancela suas matriculas
+     * @see cancelaPessoa() que já está com o pessoasService
+     * 
      * @param {*} req 
      * @param {*} res 
      * @returns 
      */
-     static async cancelaPessoa(req, res) {
+     static async cancelaPessoaSemServices(req, res) {
         const { estudanteId } = req.params;
         try {
             /**
@@ -337,7 +368,28 @@ class PessoaController {
         } catch (error) {
             return res.status(500).json(error.message);
         }        
+    } 
+    
+    /**
+     * Inativa um estudante e cancela suas matriculas
+     * usando o pessoasServices
+     * @param {*} req 
+     * @param {*} res 
+     * @returns 
+     */
+     static async cancelaPessoa(req, res) {
+        const { estudanteId } = req.params;
+        try {
+            const matriculasCanceladas = await pessoasServices.cancelaPessoaEMatriculas(Number(estudanteId));
+            return res.status(200).json({ 
+                message: `Estudante ${estudanteId} inativado`, 
+                matriculasCanceladas : matriculasCanceladas 
+            });
+        } catch (error) {
+            return res.status(500).json(error.message);
+        }        
     }    
+    
 };
 
 module.exports = PessoaController;
